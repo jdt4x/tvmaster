@@ -1,5 +1,7 @@
 package com.tvmaster.canal;
 
+import com.tvmaster.planoo.Plano;
+
 /**
  *
  * @author joice
@@ -11,7 +13,7 @@ public class Canais extends Plano{
     private String Categoria;
     
         public Canais (double preco, String Nome, int NumeroDoCanal, String Classificacao, String Categoria){
-        super(preco);
+        super();
         
         this.Categoria = Categoria;
         this.Classificacao = Classificacao;
