@@ -6,12 +6,13 @@
 
 package com.tvmaster.client.model;
 
+
 /**
  *
  * @author joice
  */
 import com.tvmaster.client.Cliente;
-import com.tvmaster.mastertv.DataAccessObject;
+import com.tvmaster.tvmaster.DataAccessObject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,15 +22,16 @@ public class ClientDAO extends DataAccessObject
 {
     private String table = "clients";
     
-    private ArrayList<Client> toList(ResultSet resultset) throws SQLException
+    private ArrayList<Cliente> toList(ResultSet resultset) throws SQLException
     {
-        ArrayList<Client> list = new ArrayList<>();
+        ArrayList<Cliente> list = new ArrayList<>();
         
         while(resultset.next()) 
         {
-            Client item = new Client();
+            Cliente item = new Cliente();
             
             item.setId(resultset.getInt("id"));
+            item.setId(resultset.getInt("Senha"));
             item.setNome(resultset.getString("nome"));
             item.setEmail(resultset.getString("email"));
             item.setCpf(resultset.getString("cpf"));
@@ -44,51 +46,48 @@ public class ClientDAO extends DataAccessObject
         return list;
     }
 
-    public void create(Client item)  throws SQLException
+    public void create(Cliente item)  throws SQLException
     {
-        try (PreparedStatement stmt = this.query("INSERT INTO " + this.table + " (email, firstName, lastName, birthdate, document, fidelity) VALUES (?,?,?,?,?,?)")) 
+        try (PreparedStatement stmt = this.query("INSERT INTO " + this.table + " (id, email, nome, cpf, telefone) VALUES (?,?,?,?,?)")) 
         {
             stmt.setString(1, item.getEmail());
-            stmt.setString(2, item.getFirstName());
-            stmt.setString(3, item.getLastName());
-            stmt.setDate(4, item.getBirthdate());
-            stmt.setString(5, item.getDocument());
-            stmt.setInt(6, item.getFidelity());
+            stmt.setString(2, item.getNome());
+            stmt.setString(3, item.getCpf());
+            stmt.setString(4, item.getTelefone());
+            stmt.setInt(5, item.getSenha());
             stmt.execute();
             stmt.close();
         } 
     }
 
-    public ArrayList<Client> read() throws SQLException 
+    public ArrayList<Cliente> read() throws SQLException 
     {
-        ArrayList<Client> list;
+        ArrayList<Cliente> list;
         
         try (PreparedStatement stmt = this.query("SELECT * FROM " + this.table)) 
         {
             ResultSet rs = stmt.executeQuery();
-            list = this.toList(rs);
+            list = (ArrayList<Cliente>) this.toList(rs);
         }
         
         return list;
     }
 
-    public void update(Client item) throws SQLException 
+    public void update(Cliente item) throws SQLException 
     {
-        try(PreparedStatement stmt = this.query("UPDATE " + this.table + " SET email=?, firstName=?, lastName=?, birthdate=?, document=?, fidelity=? WHERE id=?")) 
+        try(PreparedStatement stmt = this.query("UPDATE " + this.table + " SET email=?, nome=?, cpf=?, telefone=? WHERE id=?")) 
         {
-            stmt.setString(1, item.getEmail());
-            stmt.setString(2, item.getFirstName());
-            stmt.setString(3, item.getLastName());
-            stmt.setDate(4, item.getBirthdate());
-            stmt.setString(5, item.getDocument());
-            stmt.setInt(6, item.getFidelity());
-            stmt.setInt(7, item.getId());
+            stmt.setInt(1, item.getId());
+            stmt.setString(2, item.getEmail());
+            stmt.setString(3, item.getNome());
+            stmt.setString(4, item.getCpf());
+            stmt.setString(5, item.getTelefone());
             stmt.execute();
             stmt.close();
         }
     }
 
-    public void delete(Client item) throws SQLException 
+    public void delete(Cliente item) throws SQLException 
     {
         try(PreparedStatement stmt = this.query("DELETE FROM " + this.table + " WHERE id=?")) 
         {
@@ -98,9 +97,9 @@ public class ClientDAO extends DataAccessObject
         }
     }
     
-    private ArrayList<Client> find(String query) throws SQLException 
+    private ArrayList<Cliente> find(String query) throws SQLException 
     {
-        ArrayList<Client> list;
+        ArrayList<Cliente> list;
         
         try(PreparedStatement stmt = this.query(query))
         {
@@ -112,25 +111,25 @@ public class ClientDAO extends DataAccessObject
         return list;
     }
     
-    public Client findById(Integer id) throws SQLException 
+    public Cliente findById(Integer id) throws SQLException 
     {
-        ArrayList<Client> result = this.find("SELECT * FROM " + this.table + " WHERE id = " + id + " LIMIT 1");
+        ArrayList<Cliente> result = this.find("SELECT * FROM " + this.table + " WHERE id = " + id + " LIMIT 1");
         
         return (result.size() > 0) ? result.get(0) : null;
     }
     
-    public Client findByEmail(String email) throws SQLException 
+    public Cliente findByEmail(String email) throws SQLException 
     {
-        ArrayList<Client> result = this.find("SELECT * FROM " + this.table + " WHERE email = '" + email + "' LIMIT 1");
+        ArrayList<Cliente> result = this.find("SELECT * FROM " + this.table + " WHERE email = '" + email + "' LIMIT 1");
         
         return (result.size() > 0) ? result.get(0) : null;
     }
     
-    public int fetchFidelityPoints(int client_id) throws SQLException
+    public int BuscarChamado(int client_id) throws SQLException
     {
-        int points = 0;
+        int numero = 0;
         
-        try(PreparedStatement stmt = this.query("SELECT fidelity FROM " + this.table + " WHERE id =? LIMIT 1"))
+        try(PreparedStatement stmt = this.query("SELECT chamado FROM " + this.table + " WHERE id =? LIMIT 1"))
         {
             stmt.setInt(1, client_id);
             
@@ -138,19 +137,20 @@ public class ClientDAO extends DataAccessObject
             
             while(rs.next())
             {
-                points = rs.getInt("fidelity");
+                numero = rs.getInt("chamado");
             }
             
         }
         
-        return points;
+        return numero;
     }
     
-    public void updateFidelityPoints(int client_id, int points) throws SQLException
+    public void AtualizarChamado(int client_id, int points) throws SQLException
     {
-        try(PreparedStatement stmt = this.query("UPDATE " + this.table + " SET fidelity=? WHERE id=?"))
+        try(PreparedStatement stmt = this.query("UPDATE " + this.table + " SET chamado=? WHERE id=?"))
         {
-            stmt.setInt(1, points);
+            String motivo = null;
+            stmt.setString(1, motivo);
             stmt.setInt(2, client_id);
             
             stmt.execute();
@@ -158,16 +158,19 @@ public class ClientDAO extends DataAccessObject
         }
     }
     
-    public void addFidelityPoints(int client_id, int points) throws SQLException
+    public void AddChamado(int client_id, String data) throws SQLException
     {
-        int p = this.fetchFidelityPoints(client_id) + points;
-        this.updateFidelityPoints(client_id, p);
+       String p = this.BuscarChamado(client_id) + data;
+        this.AtualizarChamado(client_id,p);
     }
+   
+    public void RemoverChamado(int client_id, String data) throws SQLException
+    {
+        int p = this.BuscarChamado(client_id);
+        this.AtualizarChamado(client_id, p);
+    }
+
     
-    public void removeFidelityPoints(int client_id, int points) throws SQLException
-    {
-        int p = this.fetchFidelityPoints(client_id) - points;
-        this.updateFidelityPoints(client_id, p);
-    }
+   
     
 }

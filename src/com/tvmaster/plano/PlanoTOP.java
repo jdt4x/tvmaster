@@ -1,11 +1,11 @@
 
-package com.tvmaster.planoo;
+package com.tvmaster.plano;
 
 /**
  *
  * @author Bianca
  */
-public class PlanoTOP extends Plano {
+public class PlanoTOP extends Plano{
        
     
 }

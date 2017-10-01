@@ -1,21 +1,22 @@
 package com.tvmaster.canal;
 
-import com.tvmaster.planoo.Plano;
+import com.tvmaster.plano.Plano;
 
 
 /**
  *
  * @author joice
  */
-public class Canais extends Plano{
+public class Canal {
     private String Nome;
     private int NumeroDoCanal;
     private String Classificacao;
     private String Categoria;
+    private float preco;
     
-        public Canais (double preco, String Nome, int NumeroDoCanal, String Classificacao, String Categoria){
-        super();
-        
+        public Canal (float preco, String Nome, int NumeroDoCanal, String Classificacao, String Categoria){
+      
+        this.preco = preco;
         this.Categoria = Categoria;
         this.Classificacao = Classificacao;
         this.NumeroDoCanal = NumeroDoCanal;
@@ -52,5 +53,14 @@ public class Canais extends Plano{
             public String getClassificacao (){
                 return Classificacao;
             }
+            
+            public void setPreco (float preco){
+                this.preco = preco;
+            }
+            
+            public float getPreco (){
+                return preco;
+            }
+            
     
 }

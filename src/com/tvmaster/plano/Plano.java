@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.tvmaster.planoo;
+package com.tvmaster.plano;
 
 import com.tvmaster.categoria.Categoria;
 import java.util.ArrayList;

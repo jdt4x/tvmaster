@@ -7,7 +7,7 @@
 package com.tvmaster.categoria;
 
 import java.util.ArrayList;
-import com.tvmaster.canal.Canais;
+import com.tvmaster.canal.Canal;
 
 /**
  *

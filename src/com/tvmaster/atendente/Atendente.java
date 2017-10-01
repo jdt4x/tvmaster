@@ -14,8 +14,8 @@ import com.tvmaster.funcionario.Funcionario;
  */
 public class Atendente extends Funcionario {
 
-    public Atendente(String funcao, String nome, String email, String cpf, String telefone) {
-        super(funcao, nome, email, cpf, telefone);
+    public Atendente(int id,int senha, String funcao, String nome, String email, String cpf, String telefone) {
+        super(id,senha, funcao, nome, email, cpf, telefone);
     }
     
 }

@@ -5,19 +5,40 @@ package com.tvmaster.pessoa;
  * @author joice
  */
  public abstract class Pessoa {
+     
+    protected int id;
+    protected int senha;
     protected String nome;
     protected String cpf;
     protected String telefone;
     protected String email;
     
-        public Pessoa (String nome, String cpf, String telefone, String email){
+        public Pessoa (int id, int senha, String nome, String cpf, String telefone, String email){
+            this.senha = senha;
             this.cpf = cpf;
             this.email = email;
             this.nome = nome;
             this.telefone = telefone;
+            this.id = id;
         }
         
-            public void setNome (String nome){
+         public void setSenha (int Senha){
+                this.senha = Senha;
+            }
+            
+            public int getSenha (){
+                return senha;
+            } 
+            
+        public void setId (int id){
+                this.id = id;
+            }
+            
+            public int getId (){
+                return id;
+            } 
+            
+        public void setNome (String nome){
                 this.nome = nome;
             }
             
@@ -49,10 +70,7 @@ package com.tvmaster.pessoa;
                 return email;
             }
         
-            
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+         
     
     @Override
 	public String toString() {

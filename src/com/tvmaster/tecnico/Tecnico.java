@@ -8,8 +8,8 @@ import com.tvmaster.funcionario.Funcionario;
  */
 public class Tecnico extends Funcionario {
 
-    public Tecnico(String funcao, String nome, String email, String cpf, String telefone) {
-        super(funcao, nome, email, cpf, telefone);
+    public Tecnico(int id,int senha, String funcao, String nome, String email, String cpf, String telefone) {
+        super(id, senha, funcao, nome, email, cpf, telefone);
     }
     
 }

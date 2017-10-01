@@ -15,8 +15,8 @@ public abstract class Funcionario extends Pessoa{
     
     protected String funcao;
     
-        public Funcionario (String funcao, String nome, String email, String cpf, String telefone){
-            super(nome, email, cpf, telefone);
+        public Funcionario (int id, int senha, String funcao, String nome, String email, String cpf, String telefone){
+            super(id, senha, nome, email, cpf, telefone);
             this.funcao = funcao;
         
         }

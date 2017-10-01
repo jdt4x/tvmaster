@@ -10,16 +10,26 @@ package com.tvmaster.centralDeChamada;
  * @author YAN
  */
 public class CentraldeChamada {
+    private int id;
     private String data;
     private String motivo;
     private String situacao;
 
-    public CentraldeChamada(String data, String motivo, String situacao) {
+    public CentraldeChamada(int id, String data, String motivo, String situacao) {
+        this.id = id;
         this.data = data;
         this.motivo = motivo;
         this.situacao = situacao;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getData() {
         return data;
     }

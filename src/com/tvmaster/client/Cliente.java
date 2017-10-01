@@ -13,10 +13,15 @@ import com.tvmaster.pessoa.Pessoa;
  * @author joice
  */
 public class Cliente extends Pessoa{
-    private String cpf;
     
-    public Cliente (String nome, String email, String cpf, String telefone){
-    super(nome, email, cpf,telefone);
+    private Cliente (int id, int senha, String nome, String email, String cpf, String telefone){
+    super(id,senha,nome,email,cpf,telefone);
     }
+
+   
+
+ 
+
+    
     
 }
