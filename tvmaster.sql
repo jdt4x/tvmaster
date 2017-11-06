@@ -4,7 +4,7 @@ USE `tvmaster`;
 --
 -- Host: localhost    Database: tvmaster
 -- ------------------------------------------------------
--- Server version	5.5.53-0ubuntu0.14.04.1
+-- Server version	5.5.57-0ubuntu0.14.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -112,8 +112,8 @@ CREATE TABLE `Categoria` (
   PRIMARY KEY (`id_Categoria`),
   KEY `fk_Categoria_1_idx` (`id_Canais`),
   KEY `fk_Categoria_2_idx` (`id_Plano`),
-  CONSTRAINT `fk_Categoria_2` FOREIGN KEY (`id_Plano`) REFERENCES `Plano` (`id_Plano`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Categoria_1` FOREIGN KEY (`id_Canais`) REFERENCES `Canais` (`id_Canais`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_Categoria_1` FOREIGN KEY (`id_Canais`) REFERENCES `Canais` (`id_Canais`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Categoria_2` FOREIGN KEY (`id_Plano`) REFERENCES `Plano` (`id_Plano`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -146,9 +146,9 @@ CREATE TABLE `CentralDeChamadas` (
   KEY `fk_CentralDeChamadas_1_idx` (`id_Atendente`),
   KEY `fk_CentralDeChamadas_2_idx` (`id_Tecnico`),
   KEY `fk_CentralDeChamadas_3_idx` (`id_Contrato`),
-  CONSTRAINT `fk_CentralDeChamadas_3` FOREIGN KEY (`id_Contrato`) REFERENCES `Contrato` (`NumeroContrato`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_CentralDeChamadas_1` FOREIGN KEY (`id_Atendente`) REFERENCES `Atendente` (`id_Atendente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_CentralDeChamadas_2` FOREIGN KEY (`id_Tecnico`) REFERENCES `Tecnico` (`id_Tecnico`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_CentralDeChamadas_2` FOREIGN KEY (`id_Tecnico`) REFERENCES `Tecnico` (`id_Tecnico`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_CentralDeChamadas_3` FOREIGN KEY (`id_Contrato`) REFERENCES `Contrato` (`NumeroContrato`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -206,10 +206,12 @@ CREATE TABLE `Contrato` (
   `quantidadeReceptor` varchar(45) NOT NULL,
   `tipoDePlano` int(11) NOT NULL,
   `id_plano` int(11) NOT NULL,
+  `id_Fatura` int(11) NOT NULL,
   PRIMARY KEY (`NumeroContrato`),
   KEY `fk_Contrato_2_idx` (`id_plano`),
-  CONSTRAINT `fk_Contrato_2` FOREIGN KEY (`id_plano`) REFERENCES `Plano` (`id_Plano`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Contrato_1` FOREIGN KEY (`NumeroContrato`) REFERENCES `Cliente` (`id_Cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_Contrato_2_idx1` (`id_Fatura`),
+  CONSTRAINT `fk_Contrato_1` FOREIGN KEY (`NumeroContrato`) REFERENCES `Cliente` (`id_Cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Contrato_2` FOREIGN KEY (`id_Fatura`) REFERENCES `Fatura` (`id_Fatura`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -235,7 +237,9 @@ CREATE TABLE `Fatura` (
   `ValorDoPlano` float NOT NULL,
   PRIMARY KEY (`id_Fatura`),
   KEY `fk_Fatura_2_idx` (`id_Fatura`),
-  CONSTRAINT `fk_Fatura_1` FOREIGN KEY (`id_Fatura`) REFERENCES `Cliente` (`id_Cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_Fatura_2_idx1` (`id_Fatura`),
+  CONSTRAINT `fk_Fatura_1` FOREIGN KEY (`id_Fatura`) REFERENCES `Cliente` (`id_Cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Fatura_2` FOREIGN KEY (`id_Fatura`) REFERENCES `Pagamento` (`id_Pagamento`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -259,30 +263,13 @@ CREATE TABLE `Funcionario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `senha` int(11) NOT NULL,
   `email` varchar(45) NOT NULL,
-  `funcao` int(11) NOT NULL,
+  `funcao` varchar(45) NOT NULL,
   `nome` varchar(45) NOT NULL,
-  `id_Atendente` int(11) NOT NULL,
-  `id_adm` int(11) NOT NULL,
-  `id_Tecnico` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_Funcionario_1_idx` (`id_adm`),
-  KEY `fk_Funcionario_2_idx` (`id_Tecnico`),
-  KEY `fk_Funcionario_3_idx` (`id_Atendente`),
-  CONSTRAINT `fk_Funcionario_3` FOREIGN KEY (`id_Atendente`) REFERENCES `Atendente` (`id_Atendente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Funcionario_1` FOREIGN KEY (`id_adm`) REFERENCES `Administrador` (`id_adm`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Funcionario_2` FOREIGN KEY (`id_Tecnico`) REFERENCES `Tecnico` (`id_Tecnico`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `telefone` varchar(45) NOT NULL,
+  `cpf` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Funcionario`
---
-
-LOCK TABLES `Funcionario` WRITE;
-/*!40000 ALTER TABLE `Funcionario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Funcionario` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `Ilimitado`
@@ -349,8 +336,8 @@ CREATE TABLE `Pessoa` (
   UNIQUE KEY `id_UNIQUE` (`id_Pessoa`),
   KEY `fk_Pessoa_1_idx` (`id_Cliente`),
   KEY `fk_Pessoa_2_idx` (`id`),
-  CONSTRAINT `fk_Pessoa_2` FOREIGN KEY (`id`) REFERENCES `Funcionario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Pessoa_1` FOREIGN KEY (`id_Cliente`) REFERENCES `Cliente` (`id_Cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_Pessoa_1` FOREIGN KEY (`id_Cliente`) REFERENCES `Cliente` (`id_Cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Pessoa_2` FOREIGN KEY (`id`) REFERENCES `Funcionario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -384,11 +371,11 @@ CREATE TABLE `Plano` (
   KEY `fk_Plano_3_idx` (`id_Top`),
   KEY `fk_Plano_4_idx` (`id_Regular`),
   KEY `fk_Plano_5_idx` (`id_Ilimitado`),
-  CONSTRAINT `fk_Plano_5` FOREIGN KEY (`id_Ilimitado`) REFERENCES `Ilimitado` (`id_Ilimitado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Plano_1` FOREIGN KEY (`id_Categoria`) REFERENCES `Categoria` (`id_Categoria`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Plano_2` FOREIGN KEY (`id_Contrato`) REFERENCES `Contrato` (`NumeroContrato`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Plano_3` FOREIGN KEY (`id_Top`) REFERENCES `Top` (`id_Top`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Plano_4` FOREIGN KEY (`id_Regular`) REFERENCES `Regular` (`id_Regular`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_Plano_4` FOREIGN KEY (`id_Regular`) REFERENCES `Regular` (`id_Regular`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Plano_5` FOREIGN KEY (`id_Ilimitado`) REFERENCES `Ilimitado` (`id_Ilimitado`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -480,4 +467,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-01 10:13:56
+-- Dump completed on 2017-11-05 23:40:02
